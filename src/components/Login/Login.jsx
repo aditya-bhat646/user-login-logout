@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import Card from '../UI/Card/Card';
@@ -39,28 +39,25 @@ const formInputReducer = (state, action) => {
 function Login({ onLogin }) {
   const [formIsValid, setFormIsValid] = useState(false);
 
-  const [formInputState, dispatchFormAction] = useReducer(
+  const [formState, dispatchFormAction] = useReducer(
     formInputReducer,
     defaultFormState,
   );
 
-  // useEffect(() => {
-  //   const timerIdentifier = setTimeout(() => {
-  //     if (enteredEmail.includes('@')
-  //     && enteredPassword.trim().length >= 7) {
-  //       setFormIsValid(true);
-  //     } else {
-  //       setFormIsValid(false);
-  //     }
-  //   }, 750);
+  useEffect(() => {
+    const timerIdentifier = setTimeout(() => {
+      if (formState.email.includes('@')
+      && formState.password.length > 6) {
+        setFormIsValid(true);
+      } else {
+        setFormIsValid(false);
+      }
+    }, 500);
 
-  //   return () => clearTimeout(timerIdentifier);
-  // }, [enteredEmail, enteredPassword]);
+    return () => clearTimeout(timerIdentifier);
+  }, [formState.emailIsValid, formState.passwordIsValid]);
 
   const emailChangeHandler = (event) => {
-    if (event.target.value.includes('@') && formInputState.passwordIsValid) {
-      setFormIsValid(true);
-    }
     dispatchFormAction({
       type: 'EMAIL_INPUT',
       payload: event.target.value,
@@ -68,9 +65,6 @@ function Login({ onLogin }) {
   };
 
   const passwordChangeHandler = (event) => {
-    if (formInputState.emailIsValid && event.target.value.length > 6) {
-      setFormIsValid(true);
-    }
     dispatchFormAction({
       type: 'PASSWORD_INPUT',
       payload: event.target.value,
@@ -78,9 +72,6 @@ function Login({ onLogin }) {
   };
 
   const validateInputHandler = () => {
-    if (formInputState.emailIsValid && formInputState.passwordIsValid) {
-      setFormIsValid(true);
-    }
     dispatchFormAction({
       type: 'ON_BLUR',
     });
@@ -88,7 +79,7 @@ function Login({ onLogin }) {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    onLogin(formInputState.email, formInputState.password);
+    onLogin(formState.email, formState.password);
   };
 
   return (
@@ -96,7 +87,7 @@ function Login({ onLogin }) {
       <form onSubmit={submitHandler}>
         <div
           className={`${classes.control} ${
-            formInputState.emailIsValid === false ? classes.invalid : ''
+            formState.emailIsValid === false ? classes.invalid : ''
           }`}
         >
           <label htmlFor="email">
@@ -104,7 +95,7 @@ function Login({ onLogin }) {
             <input
               type="email"
               id="email"
-              value={formInputState.email}
+              value={formState.email}
               onChange={emailChangeHandler}
               onBlur={validateInputHandler}
             />
@@ -112,7 +103,7 @@ function Login({ onLogin }) {
         </div>
         <div
           className={`${classes.control} ${
-            formInputState.passwordIsValid === false ? classes.invalid : ''
+            formState.passwordIsValid === false ? classes.invalid : ''
           }`}
         >
           <label htmlFor="password">
@@ -120,7 +111,7 @@ function Login({ onLogin }) {
             <input
               type="password"
               id="password"
-              value={formInputReducer.password}
+              value={formState.password}
               onChange={passwordChangeHandler}
               onBlur={validateInputHandler}
             />
