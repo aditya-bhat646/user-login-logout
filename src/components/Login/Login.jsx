@@ -1,9 +1,14 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+} from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
+import AuthContext from '../store/Auth-Context';
 
 const defaultFormState = {
   email: '',
@@ -32,8 +37,10 @@ const formInputReducer = (state, action) => {
   return defaultFormState;
 };
 
-function Login({ onLogin }) {
+function Login() {
   const [formIsValid, setFormIsValid] = useState(false);
+
+  const authContext = useContext(AuthContext);
 
   const [formState, dispatchFormAction] = useReducer(
     formInputReducer,
@@ -69,7 +76,7 @@ function Login({ onLogin }) {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    onLogin(formState.email, formState.password);
+    authContext.onLogin(formState.email, formState.password);
   };
 
   return (
@@ -114,9 +121,5 @@ function Login({ onLogin }) {
     </Card>
   );
 }
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
-};
 
 export default Login;

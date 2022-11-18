@@ -1,27 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable no-console */
+import React, { useContext } from 'react';
+
+import AuthContext from '../store/Auth-Context';
 
 import classes from './Navigation.module.css';
 
-function Navigation({ isLoggedIn, onLogout }) {
+function Navigation() {
+  const authContext = useContext(AuthContext);
+
   return (
     <nav className={classes.nav}>
       <ul>
-        {isLoggedIn && (
+        {authContext.isLoggedIn && (
           <li>
             <a href="/">Users</a>
           </li>
         )}
-        {isLoggedIn && (
+        {authContext.isLoggedIn && (
           <li>
             <a href="/">Admin</a>
           </li>
         )}
-        {isLoggedIn && (
+        {authContext.isLoggedIn && (
           <li>
             <button
               type="button"
-              onClick={onLogout}
+              onClick={authContext.onLogout}
             >
               Logout
             </button>
@@ -31,10 +35,5 @@ function Navigation({ isLoggedIn, onLogout }) {
     </nav>
   );
 }
-
-Navigation.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  onLogout: PropTypes.func.isRequired,
-};
 
 export default Navigation;
