@@ -29,10 +29,6 @@ const formInputReducer = (state, action) => {
     };
   }
 
-  if (action.type === 'ON_BLUR') {
-    return { ...state };
-  }
-
   return defaultFormState;
 };
 
@@ -71,12 +67,6 @@ function Login({ onLogin }) {
     });
   };
 
-  const validateInputHandler = () => {
-    dispatchFormAction({
-      type: 'ON_BLUR',
-    });
-  };
-
   const submitHandler = (event) => {
     event.preventDefault();
     onLogin(formState.email, formState.password);
@@ -97,7 +87,6 @@ function Login({ onLogin }) {
               id="email"
               value={formState.email}
               onChange={emailChangeHandler}
-              onBlur={validateInputHandler}
             />
           </label>
         </div>
@@ -113,7 +102,6 @@ function Login({ onLogin }) {
               id="password"
               value={formState.password}
               onChange={passwordChangeHandler}
-              onBlur={validateInputHandler}
             />
           </label>
         </div>
