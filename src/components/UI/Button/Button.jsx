@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -21,10 +22,18 @@ function Button({
 
 Button.propTypes = {
   type: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
   children: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+};
+
+Button.defaultProps = {
+  className: '',
+  onClick() {
+    console.log('Button-Prop-onClick-noProp/missing');
+  },
+  disabled: true,
 };
 
 export default Button;
