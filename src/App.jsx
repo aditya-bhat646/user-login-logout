@@ -1,37 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
+
+import AuthContext from './components/store/Auth-Context';
 
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 import MainHeader from './components/MainHeader/MainHeader';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const storedUserInfo = localStorage.getItem('isLoggedIn');
-    if (storedUserInfo === '1') {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  const loginHandler = () => {
-    // We should of course check email and password
-    // But it's just a dummy/ demo anyways
-    localStorage.setItem('isLoggedIn', '1');
-    setIsLoggedIn(true);
-  };
-
-  const logoutHandler = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn');
-  };
+  const authContext = useContext(AuthContext);
 
   return (
     <>
-      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
+      <MainHeader />
       <main>
-        {!isLoggedIn && <Login onLogin={loginHandler} />}
-        {isLoggedIn && <Home onLogout={logoutHandler} />}
+        {!authContext.isLoggedIn && <Login />}
+        {authContext.isLoggedIn && <Home />}
       </main>
     </>
   );
