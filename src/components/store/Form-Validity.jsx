@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useReducer,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -85,14 +86,13 @@ export function FormContextProvider({ children }) {
     authContext.onLogin(formState.email, formState.password);
   };
 
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const formContextValueProp = {
+  const formContextValueProp = useMemo(() => ({
     formState,
     formIsValid,
     emailChangeHandler,
     passwordChangeHandler,
     submitHandler,
-  };
+  }), [formState, formIsValid]);
 
   return (
     <FormContext.Provider value={formContextValueProp}>

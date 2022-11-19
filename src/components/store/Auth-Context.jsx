@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 
 const AuthContext = React.createContext({
@@ -27,12 +31,11 @@ export function AuthContextProvider({ children }) {
     localStorage.removeItem('isLoggedIn');
   };
 
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const contextValue = {
+  const contextValue = useMemo(() => ({
     isLoggedIn,
     onLogin: loginHandler,
     onLogout: logoutHandler,
-  };
+  }), [isLoggedIn]);
 
   return (
     <AuthContext.Provider value={contextValue}>
