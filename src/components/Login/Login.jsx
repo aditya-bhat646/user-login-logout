@@ -9,6 +9,7 @@ import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
 import AuthContext from '../store/Auth-Context';
+import Input from '../UI/Input/Input';
 
 const defaultFormState = {
   email: '',
@@ -82,36 +83,22 @@ function Login() {
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${classes.control} ${
-            formState.emailIsValid === false ? classes.invalid : ''
-          }`}
-        >
-          <label htmlFor="email">
-            E-Mail
-            <input
-              type="email"
-              id="email"
-              value={formState.email}
-              onChange={emailChangeHandler}
-            />
-          </label>
-        </div>
-        <div
-          className={`${classes.control} ${
-            formState.passwordIsValid === false ? classes.invalid : ''
-          }`}
-        >
-          <label htmlFor="password">
-            Password
-            <input
-              type="password"
-              id="password"
-              value={formState.password}
-              onChange={passwordChangeHandler}
-            />
-          </label>
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          onChange={emailChangeHandler}
+          value={formState.email}
+          isValid={formState.emailIsValid}
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          onChange={passwordChangeHandler}
+          value={formState.password}
+          isValid={formState.passwordIsValid}
+        />
         <div className={classes.actions}>
           <Button type="submit" className={classes.btn} disabled={!formIsValid}>
             Login
